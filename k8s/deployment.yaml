@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garbanzo
+  labels:
+    app: garbanzo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: garbanzo
+  template:
+    metadata:
+      labels:
+        app: garbanzo
+    spec:
+      containers:
+      - name: app
+        image: garbanzo:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: log-level
